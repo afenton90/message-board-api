@@ -2,24 +2,18 @@ import request from 'supertest';
 
 import app from '../src/app';
 
-describe('GET /api/v1', () => {
-  it('responds with a json message', (done) => {
-    request(app)
-      .get('/api/v1')
+describe('GET /api/v1/message', () => {
+  it('responds with message id and success', async () => {
+    const response = await request(app)
+      .post('/api/v1/message')
+      .send({ text: 'Hello, World!' })
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
-      .expect(200, {
-        message: 'API - 👋🌎🌍🌏',
-      }, done);
-  });
-});
+      .expect(200);
 
-describe('GET /api/v1/emojis', () => {
-  it('responds with a json message', (done) => {
-    request(app)
-      .get('/api/v1/emojis')
-      .set('Accept', 'application/json')
-      .expect('Content-Type', /json/)
-      .expect(200, ['😀', '😳', '🙄'], done);
+    expect(response.body).toEqual({
+      id: expect.any(String),
+    });
+    expect(response.body.id.length).toBeGreaterThan(1);
   });
 });
