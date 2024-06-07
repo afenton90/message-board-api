@@ -1,59 +1,98 @@
-# Express API Starter with Typescript
+# Message Board API - Demo
 
-How to use this template:
+This is an Express.js & TypeScript application that is a simple message board API.
+This is only for demonstration purposes.
 
-```sh
-npx create-express-api --typescript --directory my-api-name
+## 🧑‍💻 API
+
+This API provides 2 simple HTTP methods on the `Message` type:
+
+### POST `/api/v1/message`
+
+This API allows the caller to create a message on the default message board.
+
+**Request Body**
+
+```json
+{
+  "text": "Message text goes here"
+}
 ```
 
-Includes API Server utilities:
+**Response Body**
 
-* [morgan](https://www.npmjs.com/package/morgan)
-  * HTTP request logger middleware for node.js
-* [helmet](https://www.npmjs.com/package/helmet)
-  * Helmet helps you secure your Express apps by setting various HTTP headers. It's not a silver bullet, but it can help!
-* [dotenv](https://www.npmjs.com/package/dotenv)
-  * Dotenv is a zero-dependency module that loads environment variables from a `.env` file into `process.env`
-* [cors](https://www.npmjs.com/package/cors)
-  * CORS is a node.js package for providing a Connect/Express middleware that can be used to enable CORS with various options.
+```json
+{
+  "id": "123456789"
+}
+```
 
-Development utilities:
+---
 
-* [typescript](https://www.npmjs.com/package/typescript)
-  * TypeScript is a language for application-scale JavaScript.
-* [ts-node](https://www.npmjs.com/package/ts-node)
-  * TypeScript execution and REPL for node.js, with source map and native ESM support.
-* [nodemon](https://www.npmjs.com/package/nodemon)
-  * nodemon is a tool that helps develop node.js based applications by automatically restarting the node application when file changes in the directory are detected.
-* [eslint](https://www.npmjs.com/package/eslint)
-  * ESLint is a tool for identifying and reporting on patterns found in ECMAScript/JavaScript code.
-* [typescript-eslint](https://typescript-eslint.io/)
-  * Tooling which enables ESLint to support TypeScript.
-* [jest](https://www.npmjs.com/package/jest)
-  * Jest is a delightful JavaScript Testing Framework with a focus on simplicity.
-* [supertest](https://www.npmjs.com/package/supertest)
-  * HTTP assertions made easy via superagent.
+### GET `/api/v1/message`
 
-## Setup
+This API allows the caller to get all messages on the message board.
+
+**Request Body**
+
+No JSON body required
+
+**Response Body**
+
+```json
+[
+  {
+    "id": "123456789",
+    "text": "Hello message"
+  },
+  {
+    "id": "1234567891",
+    "text": "Another message here"
+  }
+]
+```
+
+## 🤖 Scripts
+
+### Setup
 
 ```
 npm install
 ```
 
-## Lint
+### Lint
 
 ```
 npm run lint
 ```
 
-## Test
+### Test
 
 ```
 npm run test
 ```
 
-## Development
+### Development
 
 ```
 npm run dev
 ```
+
+## ⬇️ Middleware used
+
+- [morgan](https://www.npmjs.com/package/morgan)
+  - HTTP request logger middleware for node.js
+- [helmet](https://www.npmjs.com/package/helmet)
+  - Helmet helps you secure your Express apps by setting various HTTP headers. It's not a silver bullet, but it can help!
+- [dotenv](https://www.npmjs.com/package/dotenv)
+  - Dotenv is a zero-dependency module that loads environment variables from a `.env` file into `process.env`
+- [cors](https://www.npmjs.com/package/cors)
+  - CORS is a node.js package for providing a Connect/Express middleware that can be used to enable CORS with various options.
+
+## Caveats
+
+To make this Node.js application fully production ready it would need the following to be applied:
+
+- **RxDB replaced:** Currently this is only an in-memory database. This would need to be replaced with a more scalable solution such as a DynamoDB or FireStore.
+- **CI/CD:** Create a CI/CD process in this repo to make changes quickly.
+- **Support for multiple boards:** This is very MVP and supports a default message board. However it could be extended to support multiple boards.
