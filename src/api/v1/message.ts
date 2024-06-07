@@ -20,4 +20,10 @@ router.post<MessageAPIRequest, MessageAPIResponse>('/', async (req, res) => {
   });
 });
 
+router.get('/', async (req, res) => {
+  const messages = await messagesService.getAll();
+
+  res.json(messages);
+});
+
 export default router;

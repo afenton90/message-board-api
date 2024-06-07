@@ -4,13 +4,15 @@ import { messagesService } from './services/messages';
 
 import ErrorResponse from './interfaces/ErrorResponse';
 
-const servicesSetup = false;
+let servicesSetup = false;
 export function setupServices(req: Request, res: Response, next: NextFunction) {
   if (!servicesSetup) {
     console.log('Setting up services...');
     messagesService.setup().then(() => {
       next();
     });
+
+    servicesSetup = true;
     console.log('Services setup complete!');
   } else {
     next();

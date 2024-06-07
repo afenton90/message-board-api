@@ -1,8 +1,8 @@
 import { randomUUID } from 'crypto';
-import { RxCollection, createRxDatabase } from 'rxdb';
+import { RxCollection, RxDocument, createRxDatabase } from 'rxdb';
 import { getRxStorageMemory } from 'rxdb/plugins/storage-memory';
 
-interface Message {
+export interface Message {
   id: string;
   text: string;
 }
@@ -25,6 +25,7 @@ export const messagesService = {
           properties: {
             id: {
               type: 'string',
+              maxLength: 36,
             },
             text: {
               type: 'string',
@@ -33,6 +34,12 @@ export const messagesService = {
         },
       },
     });
+  },
+
+  async teardown(): Promise<void> {
+    console.log('Removing messages database');
+    const allDocuments = await database.messages.find().exec();
+    await Promise.all(allDocuments.map((doc) => doc.remove()));
   },
 
   async create(messageOptions: { text: string }): Promise<Message> {
@@ -53,5 +60,15 @@ export const messagesService = {
     console.log('Successfully saved message:', message);
 
     return message;
+  },
+
+  async getAll(): Promise<Message[]> {
+    const messages = await database.messages.find().exec();
+
+    // Map database messages to message type
+    return messages.map((message: RxDocument) => ({
+      id: message.get('id'),
+      text: message.get('text'),
+    }));
   },
 };
